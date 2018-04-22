@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Effective JavaScript: Frogger</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <section class='visible win' id='message-win'>
+        <p>You did it!</p>
+        <p>One more time?</p>
+        <button id='btn2'>SURE!</button>
+    </section>
+
+    <section class='visible lost' id='message-lost'>
+        <p>Sorry you have lost all yours lifes at level <span id='lvlMsg'></span>.</p>
+        <p>One more time?</p>
+        <button id='btn1'>SURE!</button>
+    </section>
+
+    <section class='score-panel'>
+        <p class='lev'>Level: <span id='level'>1</span></p>
+        <p class='life' id='life'>Lifes: 
+            
+            <img class='heart' src='images/HeartSmall.png'>
+            <img class='heart' src='images/HeartSmall.png'>
+            <img class='heart' src='images/HeartSmall.png'>
+
+        </p>
+    </section>
+
+    <script src="js/resources.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/engine.js"></script>
+</body>
+</html>
