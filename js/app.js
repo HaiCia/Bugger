@@ -40,6 +40,7 @@ const Player = function (x, y, sprite) {
     this.sprite = sprite;
     this.deads = 3; // initial lives
 };
+
 // Detecting collision 
 Player.prototype.update = function (arr) {
 
@@ -59,6 +60,7 @@ Player.prototype.update = function (arr) {
         this.deads = 0;
     }
 }
+
 // method reducing lives after collison
 Player.prototype.dead = function () {
     this.deads--;
