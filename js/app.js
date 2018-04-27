@@ -1,4 +1,5 @@
-// Enemies player must avoid
+/*  ----------------------------------Enemy class -------------------------------------------  */
+
 var Enemy = function (x, y, speed) {
 
     // Variables applied to each of our instances go here,
@@ -10,6 +11,11 @@ var Enemy = function (x, y, speed) {
 
     // The image/sprite for our enemies,
     this.sprite = 'images/enemy-bug.png';
+};
+
+// Draw the enemy on the screen, required method for game
+Enemy.prototype.render = function () {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Update the enemy's position, required method for game
@@ -26,12 +32,11 @@ Enemy.prototype.update = function (dt) {
     // all computers.
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
 
-// Player class
+/* ------------------------------------------ Player class --------------------------------------------- */
+// methods added alphabetically
+
+
 const Player = function (x, y, sprite) {
     this.x = x;
     this.y = y;
@@ -40,27 +45,6 @@ const Player = function (x, y, sprite) {
     this.sprite = sprite;
     this.deads = 3; // initial lives
 };
-
-
-// Detecting collision 
-Player.prototype.update = function (arr) {
-
-    // Loop over enemies to find collison
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i].x + arr[i].width >= player.x + 30 && arr[i].x + arr[i].width <= player.x + 120 && arr[i].y === player.y) {
-            this.dead();
-        }
-    }
-
-    // Level up for reaching top of the canvas
-    if (this.y <= 0 && this.levelCount < 10) {
-        this.levelUp();
-        this.reset();
-    } else if (this.levelCount === 10) {
-        popUpWin();
-        this.deads = 0;
-    }
-}
 
 // method reducing lives after collison
 Player.prototype.dead = function () {
@@ -80,13 +64,26 @@ Player.prototype.dead = function () {
     }
 }
 
-// resets player position after collison
-Player.prototype.reset = function () {
-    this.x = 200;
-    this.y = 320;
+// keybord handlers 
+Player.prototype.handleInput = function (e) {
+
+    if (window.event) {
+        e = window.event;
+    }
+    const keyPressed = e.keyCode;
+
+    if (keyPressed === 37 && this.x > 1) {
+        this.x -= 100;
+    } else if (keyPressed === 38 && this.y > 5) {
+        this.y -= 83;
+    } else if (keyPressed === 39 && this.x < 400) {
+        this.x += 100;
+    } else if (keyPressed === 40 && this.y < 321) {
+        this.y += 83;
+    }
 }
 
-// leveling up hardness of the game each time player touch the top  
+// leveling up hardness of the game each time player touch the top 
 Player.prototype.levelUp = function () {
 
     // update score panel
@@ -115,44 +112,55 @@ Player.prototype.levelUp = function () {
     }
 }
 
+// get character visible to the canvas
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
     const boy = document.getElementById('boy');
-    const girl= document.getElementById('girl');
+    const girl = document.getElementById('girl');
     const menu = document.getElementById('menu');
 
-    menu.addEventListener('click', function(e) {
-        if(e.target.id == "boy") {
+    menu.addEventListener('click', function (e) {
+        if (e.target.id == "boy") {
             player = him;
             boy.addEventListener('click', closeMenu);
-        } else if( e.target.id == "girl") {
+        } else if (e.target.id == "girl") {
             player = her;
             girl.addEventListener('click', closeMenu);
         }
     });
 };
 
-Player.prototype.handleInput = function (e) {
+// resets player position after collison
+Player.prototype.reset = function () {
+    this.x = 200;
+    this.y = 320;
+}
 
-    if (window.event) {
-        e = window.event;
+// Detecting collision 
+Player.prototype.update = function (arr) {
+
+    // Loop over enemies to find collison
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].x + arr[i].width >= player.x + 30 && arr[i].x + arr[i].width <= player.x + 120 && arr[i].y === player.y) {
+            this.dead();
+        }
     }
 
-    const keyPressed = e.keyCode;
-
-    if (keyPressed === 37 && this.x > 1) {
-        this.x -= 100;
-    } else if (keyPressed === 38 && this.y > 5) {
-        this.y -= 83;
-    } else if (keyPressed === 39 && this.x < 400) {
-        this.x += 100;
-    } else if (keyPressed === 40 && this.y < 321) {
-        this.y += 83;
+    // Level up for reaching top of the canvas
+    if (this.y <= 0 && this.levelCount < 10) {
+        this.levelUp();
+        this.reset();
+    } else if (this.levelCount === 10) {
+        popUpWin();
+        this.deads = 0;
     }
 }
 
-// Now instantiate your objects.
+/* --------------------------Objects instantiate ----------------------------------- */
+
+
+//  instantiate Enemy.
 const enemy1 = new Enemy(-200, 71, 100);
 const enemy2 = new Enemy(-500, 71, 150);
 const enemy3 = new Enemy(-200, 154, 210);
@@ -163,21 +171,19 @@ const enemy7 = new Enemy(-100, 71, 0);
 const enemy8 = new Enemy(-100, 154, 0);
 const enemy9 = new Enemy(-100, 237, 0);
 
-// Place the player object in a variable called player
-
+// instantiate Player
 const him = new Player(200, 320, 'images/char-boy.png');
 const her = new Player(200, 320, 'images/char-cat-girl.png');
-
-const boy = document.getElementById('boy');
-const girl = document.getElementById('girl');
-const menu = document.getElementById('menu');
-
 let player = him;
 
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9];
 
-// This listens for key presses and sends the keys to your
+
+/* ---------------------------------- Event listeners, secondary functions and variables  ---------------------------- */
+
+
+// This listens for key presses 
 document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
@@ -215,7 +221,7 @@ function pageReload() {
     window.location.reload();
 }
 
-// close player chooser
+// close player chooser menu
 function closeMenu() {
     menu.classList.add('visible');
 }
