@@ -41,6 +41,7 @@ const Player = function (x, y, sprite) {
     this.deads = 3; // initial lives
 };
 
+
 // Detecting collision 
 Player.prototype.update = function (arr) {
 
@@ -116,6 +117,20 @@ Player.prototype.levelUp = function () {
 
 Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+    const boy = document.getElementById('boy');
+    const girl= document.getElementById('girl');
+    const menu = document.getElementById('menu');
+
+    menu.addEventListener('click', function(e) {
+        if(e.target.id == "boy") {
+            player = him;
+            boy.addEventListener('click', closeMenu);
+        } else if( e.target.id == "girl") {
+            player = her;
+            girl.addEventListener('click', closeMenu);
+        }
+    });
 };
 
 Player.prototype.handleInput = function (e) {
@@ -149,7 +164,15 @@ const enemy8 = new Enemy(-100, 154, 0);
 const enemy9 = new Enemy(-100, 237, 0);
 
 // Place the player object in a variable called player
-const player = new Player(200, 320, 'images/char-cat-girl.png');
+
+const him = new Player(200, 320, 'images/char-boy.png');
+const her = new Player(200, 320, 'images/char-cat-girl.png');
+
+const boy = document.getElementById('boy');
+const girl = document.getElementById('girl');
+const menu = document.getElementById('menu');
+
+let player = him;
 
 // Place all enemy objects in an array called allEnemies
 let allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9];
@@ -190,4 +213,9 @@ function popUpWin() {
 // refresh page
 function pageReload() {
     window.location.reload();
+}
+
+// close player chooser
+function closeMenu() {
+    menu.classList.add('visible');
 }

@@ -9,6 +9,8 @@ Front-end Nanodegree Udacity Project. The goal is to move character from 'grass'
 
 To start download files and open index.html in browser.
 
+To choose character just double click on character.
+
 By using arrows keys on keybord character is moving side to side and top to bottom. Each time character touch the Bug one of the lives is gone. after 3-rd and 7-th time character reach 'water' difficulty is changing, last three levels are really hard. Enjoy!
 
 ### Dependencies: 
